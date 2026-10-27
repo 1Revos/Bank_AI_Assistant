@@ -36,11 +36,22 @@ graph TD
     
     G --> END([Ответ пользователю])
 
-    style START fill:#1f232a,stroke:#38bdf8,stroke-width:2px
-    style END fill:#1f232a,stroke:#38bdf8,stroke-width:2px
-    style B fill:#1e1b4b,stroke:#818cf8,stroke-width:2px
-    style E fill:#1e1b4b,stroke:#818cf8,stroke-width:2px
+    %% Стили для текста (перекрашиваем в белый цвет для читаемости)
+    classDef whiteText color:#ffffff, font-weight:bold;
+    class START,A,B,C,D,E,F,G,END whiteText;
+
+    %% Стили для самих блоков (цвета фона и рамок)
+    style START fill:#0284c7,stroke:#0284c7,stroke-width:2px
+    style END fill:#0284c7,stroke:#0284c7,stroke-width:2px
+    style A fill:#4338ca,stroke:#4338ca,stroke-width:2px
+    style C fill:#4338ca,stroke:#4338ca,stroke-width:2px
+    style D fill:#4338ca,stroke:#4338ca,stroke-width:2px
+    style F fill:#4338ca,stroke:#4338ca,stroke-width:2px
+    style G fill:#4338ca,stroke:#4338ca,stroke-width:2px
+    style B fill:#1e1b4b,stroke:#6366f1,stroke-width:2px
+    style E fill:#1e1b4b,stroke:#6366f1,stroke-width:2px
 ```
+
 ## Архитектура
 
          Пользователь
