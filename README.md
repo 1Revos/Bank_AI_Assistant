@@ -102,45 +102,47 @@ cd First_agent
 
 2. Создать виртуальное окружение
 
-bash
+```
 python -m venv venv
-Используйте код с осторожностью.
+```
 
 3. Активировать окружение и установить зависимости
 
 Windows:
-powershell
+```
 .\venv\Scripts\activate
 pip install -r requirements.txt
-Используйте код с осторожностью.
+```
 macOS / Linux:
-bash
+```
 source venv/bin/activate
 pip install -r requirements.txt
-Используйте код с осторожностью.
+```
 
 4. Создать файл .env
 
 Создайте текстовый файл .env в корне проекта и добавьте ваши ключи доступа:
-env
+```
 OPENAI_API_KEY=your_openai_api_key_here
 NEON_CONNECTION_STRING=postgresql://user:password@endpoint/dbname?sslmode=require
-Используйте код с осторожностью.
+```
 
 Запуск
 
 Запуск десктопного приложения выполняется в один клик через оптимизированный пакетный файл Windows:
+```
 text
 run.bat
-Используйте код с осторожностью.
+```
 Внутри скрипта автоматически настраивается кодировка терминала UTF-8 (для предотвращения ошибок вывода русских символов), активируется venv и запускается точка входа:
+```
 batch
 @echo off
 chcp 65001 > nul
 cd /d "%~dp0"
 "venv\Scripts\python.exe" app.py
 pause
-Используйте код с осторожностью.
+```
 
 Интерфейс и статистика
 
