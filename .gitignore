@@ -2,3 +2,6 @@ venv/
 .env
 .ipynb_checkpoints/
 __pycache__/
+ui.py
+experiment.ipynb
+research/

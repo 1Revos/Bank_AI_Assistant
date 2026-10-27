@@ -1,6 +1,6 @@
 from langchain_postgres import PGVector
 
-from models import embeddings
+from src.models import embeddings
 from config import NEON_CONNECTION_STRING
 
 

@@ -2,6 +2,7 @@ import customtkinter as ctk
 from langchain_core.messages import HumanMessage
 from app import graph
 import uuid
+import json
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -39,6 +40,10 @@ status.pack(side="right", padx=20)
 
 main = ctk.CTkFrame(app)
 main.pack(fill="both", expand=True, padx=15, pady=10)
+
+progress = ctk.CTkProgressBar(main)
+progress.pack(fill="x", padx=15, pady=(0,10))
+progress.set(0)
 
 chat = ctk.CTkTextbox(
     main,
@@ -378,6 +383,10 @@ def run_tests():
 
 
     total_time = 0
+    report = []
+
+    max_time = 0
+    min_time = 999999
 
 
     for i,q in enumerate(queries):
@@ -415,24 +424,80 @@ def run_tests():
 
         total_time+=elapsed
 
+        answer = result["messages"][-1].content
+
+        rag = "Да" if result.get("retrieved_docs") else "Нет"
+
+        docs = len(result.get("retrieved_docs", []))
+
+        progress.set((i+1)/len(queries))
+
+        max_time = max(max_time, elapsed)
+        min_time = min(min_time, elapsed)
+
 
         add_log(
-            f"[{i+1}/{len(queries)}] "
-            f"{elapsed:.2f}s | "
-            f"topic={result.get('detected_topic')}"
+        f"""
+        ========================================
+        Тест {i+1}/{len(queries)}
+
+        Запрос:
+        {q}
+
+        Тема:
+        {result.get('detected_topic')}
+
+        RAG:
+        {rag}
+
+        Документов:
+        {docs}
+
+        Время:
+        {elapsed:.2f} сек
+
+        Ответ:
+        {answer}
+
+        ========================================
+        """
         )
+
+        report.append({
+            "query": q,
+            "topic": result.get("detected_topic"),
+            "rag": rag,
+            "documents": docs,
+            "time": elapsed,
+            "answer": answer
+        })
 
 
     avg=total_time/len(queries)
 
+    with open(
+    "tests/report.json",
+    "w",
+    encoding="utf-8"
+    ) as f:
+        json.dump(
+            report,
+            f,
+            ensure_ascii=False,
+            indent=4
+        )
 
-    add_log(
-        f"Среднее время ответа: {avg:.2f} сек"
-    )
 
-    add_log(
-        "Тестирование завершено"
-    )
+    add_log("=" * 45)
+    add_log(f"Всего запросов: {len(queries)}")
+    add_log(f"Среднее время: {avg:.2f} сек")
+    add_log(f"Минимальное время: {min_time:.2f} сек")
+    add_log(f"Максимальное время: {max_time:.2f} сек")
+    add_log("Отчет сохранен в tests/report.json")
+    add_log("=" * 45)
+    add_log("Тестирование завершено")
+
+    progress.set(1)
 
 test_btn = ctk.CTkButton(
     bottom,
@@ -454,12 +519,15 @@ test_btn.pack(
 clear_btn = ctk.CTkButton(
     bottom,
     text="🧹 Очистить логи",
+    width=160,
+    height=45,
     command=lambda:clear_logs()
 )
 
 clear_btn.pack(
     side="right",
-    padx=10
+    padx=10,
+    pady=15
 )
 
 def clear_logs():
