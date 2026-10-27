@@ -17,7 +17,30 @@
 • ✅ Статистика работы агента (время ответа, число LLM-вызовов, длина контекста)
 • ✅ Массовое автоматическое тестирование пула пользовательских запросов
 ```
+# 📐 Архитектура графа ассистента
 
+```mermaid
+graph TD
+    START([Пользователь]) --> A[detect_topic<br>Определение темы]
+    A --> B{check_topic_exists<br>Тема есть в БД?}
+    
+    B -- Да --> C[retrieve_documents<br>RAG-поиск документов]
+    B -- Нет --> D[generate_without_rag<br>Генерация базовой LLM]
+    
+    C --> E{check_documents<br>Документы найдены?}
+    E -- Да --> F[generate_answer<br>Генерация ответа по RAG]
+    E -- Нет --> D
+    
+    F --> G[save_to_bd<br>Сохранение в БД]
+    D --> G
+    
+    G --> END([Ответ пользователю])
+
+    style START fill:#1f232a,stroke:#38bdf8,stroke-width:2px
+    style END fill:#1f232a,stroke:#38bdf8,stroke-width:2px
+    style B fill:#1e1b4b,stroke:#818cf8,stroke-width:2px
+    style E fill:#1e1b4b,stroke:#818cf8,stroke-width:2px
+```
 ## Архитектура
 
          Пользователь
