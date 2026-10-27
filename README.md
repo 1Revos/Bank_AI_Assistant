@@ -45,7 +45,6 @@
 ## Структура проекта
 
 ```
-text
 First_agent/
 │
 ├── .env                  # Локальные ключи API и строка подключения к БД (не для Git)
@@ -129,7 +128,7 @@ NEON_CONNECTION_STRING=postgresql://user:password@endpoint/dbname?sslmode=requir
 ## Запуск
 
 Запуск десктопного приложения выполняется в один клик через оптимизированный пакетный файл Windows:
-text
+
 ```
 run.bat
 ```
